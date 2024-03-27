@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Confidence Heatmaps and Predictions</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f0f0f0;
+    }
+
+    h1 {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        margin-top: 20px;
+    }
+
+    .column {
+        flex: 45%;
+        max-width: 45%;
+        margin-bottom: 20px;
+        padding: 10px;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+    }
+
+    h2 {
+        font-size: 1.5em;
+        margin-bottom: 10px;
+    }
+
+    img {
+        display: block;
+        max-width: 100%;
+        height: auto;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>Confidence Heatmaps and Predictions</h1>
+    <div class="row">
+        <div class="column">
+            <h2>FND Method</h2>
+            <h3>Confidence Heatmaps</h3>
+            <div>
+                <?php
+                $files = glob('FND/confidences_heatmaps/*.png');
+                foreach ($files as $file) {
+                    echo '<img src="' . $file . '">';
+                }
+                ?>
+            </div>
+            <h3>Predictions at 0.3 Threshold</h3>
+            <div>
+                <?php
+                $files = glob('FND/predictions_at_0.3/*.png');
+                foreach ($files as $file) {
+                    echo '<img src="' . $file . '">';
+                }
+                ?>
+            </div>
+        </div>
+        <div class="column">
+            <h2>BPC-FND Method</h2>
+            <h3>Confidence Heatmaps</h3>
+            <div>
+                <?php
+                $files = glob('BPC-FND/confidences_heatmaps/*.png');
+                foreach ($files as $file) {
+                    echo '<img src="' . $file . '">';
+                }
+                ?>
+            </div>
+            <h3>Predictions at 0.3 Threshold</h3>
+            <div>
+                <?php
+                $files = glob('BPC-FND/predictions_at_0.3/*.png');
+                foreach ($files as $file) {
+                    echo '<img src="' . $file . '">';
+                }
+                ?>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
