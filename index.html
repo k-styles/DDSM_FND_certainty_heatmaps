@@ -62,22 +62,22 @@
         <div class="column">
             <h2>FND Method</h2>
             <?php
-            $fnd_confidence_files = glob('visualizations/FND/confidences_heatmaps/*.png');
+            $fnd_confidence_files = glob('visualizations/FND/certainty_maps/*.png');
             $fnd_prediction_files = glob('visualizations/FND/predictions/*.png');
             foreach (array_combine($fnd_confidence_files, $fnd_prediction_files) as $confidence_file => $prediction_file) {
                 $image_id = basename($confidence_file, '.png');
-                echo "<div><strong>Image ID:</strong> " . $image_id . "<br><img src='" . $prediction_file . "'><img src='" . $confidence_file . "'></div>";
+                echo '<div><strong>Image ID:</strong> ' . $image_id . '<br><img src="' . $prediction_file . '"><img src="' . $confidence_file . '"></div>';
             }
             ?>
         </div>
         <div class="column">
             <h2>BPC-FND Method</h2>
             <?php
-            $bpc_fnd_confidence_files = glob('visualizations/BPC-FND/confidences_heatmaps/*.png');
+            $bpc_fnd_confidence_files = glob('visualizations/BPC-FND/certainty_maps/*.png');
             $bpc_fnd_prediction_files = glob('visualizations/BPC-FND/predictions/*.png');
             foreach (array_combine($bpc_fnd_confidence_files, $bpc_fnd_prediction_files) as $confidence_file => $prediction_file) {
                 $image_id = basename($confidence_file, '.png');
-                echo "<div><strong>Image ID:</strong> " . $image_id . "<br><img src='" . $prediction_file . "'><img src='" . $confidence_file . "'></div>";
+                echo '<div><strong>Image ID:</strong> ' . $image_id . '<br><img src="' . $prediction_file . '"><img src="' . $confidence_file . '"></div>';
             }
             ?>
         </div>
