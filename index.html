@@ -58,31 +58,41 @@
 <body>
 <div class="container">
     <h1>Confidence Heatmaps and Predictions</h1>
-    <div class="row">
-        <div class="column">
-            <h2>FND Method</h2>
-            <?php
-            $fnd_confidence_files = glob('visualizations/FND/certainty_maps/*.png');
-            $fnd_prediction_files = glob('visualizations/FND/predictions/*.png');
-            foreach (array_combine($fnd_confidence_files, $fnd_prediction_files) as $confidence_file => $prediction_file) {
-                $image_id = basename($confidence_file, '.png');
-                echo '<div><strong>Image ID:</strong> ' . $image_id . '<br><img src="' . $prediction_file . '"><img src="' . $confidence_file . '"></div>';
-            }
-            ?>
-        </div>
-        <div class="column">
-            <h2>BPC-FND Method</h2>
-            <?php
-            $bpc_fnd_confidence_files = glob('visualizations/BPC-FND/certainty_maps/*.png');
-            $bpc_fnd_prediction_files = glob('visualizations/BPC-FND/predictions/*.png');
-            foreach (array_combine($bpc_fnd_confidence_files, $bpc_fnd_prediction_files) as $confidence_file => $prediction_file) {
-                $image_id = basename($confidence_file, '.png');
-                echo '<div><strong>Image ID:</strong> ' . $image_id . '<br><img src="' . $prediction_file . '"><img src="' . $confidence_file . '"></div>';
-            }
-            ?>
-        </div>
-    </div>
+    <div class="row" id="imagesContainer"></div>
 </div>
+
+<script>
+    function loadImage(imageId, predictionSrc, confidenceSrc) {
+        var container = document.getElementById('imagesContainer');
+        var div = document.createElement('div');
+        var strong = document.createElement('strong');
+        strong.textContent = 'Image ID: ' + imageId;
+        var predictionImg = document.createElement('img');
+        predictionImg.src = predictionSrc;
+        var confidenceImg = document.createElement('img');
+        confidenceImg.src = confidenceSrc;
+        div.appendChild(strong);
+        div.appendChild(predictionImg);
+        div.appendChild(confidenceImg);
+        container.appendChild(div);
+    }
+
+    function fetchImages(method) {
+        fetch('./visualizations/' + method + '/certainty_maps')
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(file => {
+                    var imageId = file.split('.')[0];
+                    var predictionSrc = method + '/predictions_at_0.3/' + file;
+                    var confidenceSrc = method + '/certainty_maps/' + file;
+                    loadImage(imageId, predictionSrc, confidenceSrc);
+                });
+            });
+    }
+
+    fetchImages('FND');
+    fetchImages('BPC-FND');
+</script>
 </body>
 </html>
 
