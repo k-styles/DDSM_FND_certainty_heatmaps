@@ -66,7 +66,7 @@
             $fnd_prediction_files = glob('visualizations/FND/predictions/*.png');
             foreach (array_combine($fnd_confidence_files, $fnd_prediction_files) as $confidence_file => $prediction_file) {
                 $image_id = basename($confidence_file, '.png');
-                echo '<div><strong>Image ID:</strong> ' . $image_id . '<br><img src="' . $prediction_file . '"><img src="' . $confidence_file . '"></div>';
+                echo "<div><strong>Image ID:</strong> " . $image_id . "<br><img src='" . $prediction_file . "'><img src='" . $confidence_file . "'></div>";
             }
             ?>
         </div>
@@ -77,7 +77,7 @@
             $bpc_fnd_prediction_files = glob('visualizations/BPC-FND/predictions/*.png');
             foreach (array_combine($bpc_fnd_confidence_files, $bpc_fnd_prediction_files) as $confidence_file => $prediction_file) {
                 $image_id = basename($confidence_file, '.png');
-                echo '<div><strong>Image ID:</strong> ' . $image_id . '<br><img src="' . $prediction_file . '"><img src="' . $confidence_file . '"></div>';
+                echo "<div><strong>Image ID:</strong> " . $image_id . "<br><img src='" . $prediction_file . "'><img src='" . $confidence_file . "'></div>";
             }
             ?>
         </div>
