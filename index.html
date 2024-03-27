@@ -25,7 +25,6 @@
 
     .row {
         display: flex;
-        flex-wrap: wrap;
         justify-content: space-around;
         margin-top: 20px;
     }
@@ -33,6 +32,9 @@
     .column {
         flex: 45%;
         max-width: 45%;
+    }
+
+    .image-container {
         margin-bottom: 20px;
         padding: 10px;
         background-color: #fff;
@@ -58,40 +60,34 @@
 <body>
 <div class="container">
     <h1>Confidence Heatmaps and Predictions</h1>
-    <div class="row" id="imagesContainer"></div>
+    <div class="row">
+        <div class="column" id="fndContainer"></div>
+        <div class="column" id="bpcFndContainer"></div>
+    </div>
 </div>
 
 <script>
-    function loadImage(imageId, predictionSrc, confidenceSrc) {
-        var container = document.getElementById('imagesContainer');
-        var div = document.createElement('div');
-        var strong = document.createElement('strong');
-        strong.textContent = 'Image ID: ' + imageId;
-        var predictionImg = document.createElement('img');
-        predictionImg.src = predictionSrc;
-        var confidenceImg = document.createElement('img');
-        confidenceImg.src = confidenceSrc;
-        div.appendChild(strong);
-        div.appendChild(predictionImg);
-        div.appendChild(confidenceImg);
-        container.appendChild(div);
-    }
-
-    function fetchImages(method) {
-        fetch('./visualizations/' + method + '/certainty_maps')
+    function fetchImages(method, containerId) {
+        fetch(method + '/confidences_heatmaps')
             .then(response => response.json())
             .then(data => {
+                var container = document.getElementById(containerId);
                 data.forEach(file => {
                     var imageId = file.split('.')[0];
                     var predictionSrc = method + '/predictions_at_0.3/' + file;
-                    var confidenceSrc = method + '/certainty_maps/' + file;
-                    loadImage(imageId, predictionSrc, confidenceSrc);
+                    var confidenceSrc = method + '/confidences_heatmaps/' + file;
+                    var div = document.createElement('div');
+                    div.className = 'image-container';
+                    div.innerHTML = '<strong>Image ID: ' + imageId + '</strong><br>' +
+                                    '<img src="' + predictionSrc + '"><br>' +
+                                    '<img src="' + confidenceSrc + '">';
+                    container.appendChild(div);
                 });
             });
     }
 
-    fetchImages('FND');
-    fetchImages('BPC-FND');
+    fetchImages('FND', 'fndContainer');
+    fetchImages('BPC-FND', 'bpcFndContainer');
 </script>
 </body>
 </html>
