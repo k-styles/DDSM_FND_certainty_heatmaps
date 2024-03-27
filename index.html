@@ -64,7 +64,7 @@
             <h3>Confidence Heatmaps</h3>
             <div>
                 <?php
-                $files = glob('FND/confidences_heatmaps/*.png');
+                $files = glob('visualizations/FND/confidences_heatmaps/*.png');
                 foreach ($files as $file) {
                     echo '<img src="' . $file . '">';
                 }
@@ -73,7 +73,7 @@
             <h3>Predictions at 0.3 Threshold</h3>
             <div>
                 <?php
-                $files = glob('FND/predictions_at_0.3/*.png');
+                $files = glob('visualizations/FND/predictions_at_0.3/*.png');
                 foreach ($files as $file) {
                     echo '<img src="' . $file . '">';
                 }
@@ -85,7 +85,7 @@
             <h3>Confidence Heatmaps</h3>
             <div>
                 <?php
-                $files = glob('BPC-FND/confidences_heatmaps/*.png');
+                $files = glob('visualizations/BPC-FND/confidences_heatmaps/*.png');
                 foreach ($files as $file) {
                     echo '<img src="' . $file . '">';
                 }
@@ -94,7 +94,7 @@
             <h3>Predictions at 0.3 Threshold</h3>
             <div>
                 <?php
-                $files = glob('BPC-FND/predictions_at_0.3/*.png');
+                $files = glob('visualizations/BPC-FND/predictions_at_0.3/*.png');
                 foreach ($files as $file) {
                     echo '<img src="' . $file . '">';
                 }
