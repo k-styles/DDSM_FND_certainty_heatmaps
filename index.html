@@ -1,94 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Confidence Heatmaps and Predictions</title>
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #f0f0f0;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Comparison</title>
+    <style>
+        .container {
+            margin: 0 auto;
+            padding: 20px;
+        }
 
-    h1 {
-        text-align: center;
-        margin-top: 20px;
-    }
+        label {
+            font-weight: bold;
+        }
 
-    .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 20px;
-    }
+        input[type="number"] {
+            width: 60px;
+        }
 
-    .row {
-        display: flex;
-        justify-content: space-around;
-        margin-top: 20px;
-    }
+        button {
+            padding: 8px 16px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
 
-    .column {
-        flex: 45%;
-        max-width: 45%;
-    }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
 
-    .image-container {
-        margin-bottom: 20px;
-        padding: 10px;
-        background-color: #fff;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        border-radius: 5px;
-    }
+        th, td {
+            padding: 16px;
+            border: 1px solid #ddd;
+            text-align: center;
+            vertical-align: middle;
+        }
 
-    h2 {
-        font-size: 1.5em;
-        margin-bottom: 10px;
-    }
+        th {
+            background-color: #f2f2f2;
+        }
 
-    img {
-        display: block;
-        max-width: 100%;
-        height: auto;
-        margin-bottom: 10px;
-        border-radius: 5px;
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-    }
-</style>
+        img {
+            max-width: 500px; /* Increase maximum width of images */
+            max-height: 500px; /* Increase maximum height of images */
+            display: block;
+            margin: 0 auto;
+        }
+
+        .fileNameDiv {
+            margin-top: 8px;
+            font-size: 14px;
+        }
+    </style>
 </head>
 <body>
-<div class="container">
-    <h1>Confidence Heatmaps and Predictions</h1>
-    <div class="row">
-        <div class="column" id="fndContainer"></div>
-        <div class="column" id="bpcFndContainer"></div>
+    <div class="container">
+        <form id="imageForm">
+            <label for="imageCount">Number of Rows to Add:</label>
+            <input type="number" id="imageCount" name="imageCount" min="1">
+            <button type="submit">Add Rows</button>
+        </form>
+
+        <div id="imageContainer">
+            <table id="imageTable">
+                <thead>
+                    <tr>
+                        <th colspan="2">FND</th>
+                        <th colspan="2">BPC-FND</th>
+                    </tr>
+                    <tr>
+                        <th>FND - Certainty Maps</th>
+                        <th>FND - Predictions at 0.3</th>
+                        <th>BPC-FND - Certainty Maps</th>
+                        <th>BPC-FND - Predictions at 0.3</th>
+                    </tr>
+                </thead>
+                <tbody id="imageTableBody">
+                    <!-- Rows will be added dynamically -->
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
+    <script>
+        document.getElementById('imageForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var imageCount = parseInt(document.getElementById('imageCount').value);
+            var tbody = document.getElementById('imageTableBody');
+            
+            for (var i = 0; i < imageCount; i++) {
+                var row = document.createElement('tr');
 
-<script>
-    function fetchImages(method, containerId) {
-        fetch(method + '/confidences_heatmaps')
-            .then(response => response.json())
-            .then(data => {
-                var container = document.getElementById(containerId);
-                data.forEach(file => {
-                    var imageId = file.split('.')[0];
-                    var predictionSrc = method + '/predictions_at_0.3/' + file;
-                    var confidenceSrc = method + '/confidences_heatmaps/' + file;
-                    var div = document.createElement('div');
-                    div.className = 'image-container';
-                    div.innerHTML = '<strong>Image ID: ' + imageId + '</strong><br>' +
-                                    '<img src="' + predictionSrc + '"><br>' +
-                                    '<img src="' + confidenceSrc + '">';
-                    container.appendChild(div);
+                // Paths for each image
+                var paths = [
+                    `visualizations/FND/certainty_maps/tensor([${i+1}])_heatmap_hot_linear.png`,
+                    `visualizations/FND/predictions_at_0.3/${i+1}-fnd_pred.png`,
+                    `visualizations/BPC-FND/certainty_maps/tensor([${i+1}])_heatmap_hot_linear.png`,
+                    `visualizations/BPC-FND/predictions_at_0.3/${i+1}-bpcfnd_pred.png`
+                ];
+
+                // Append images to table cells
+                paths.forEach(path => {
+                    var cell = document.createElement('td');
+                    var img = document.createElement('img');
+                    img.src = path;
+                    img.alt = 'Image';
+                    cell.appendChild(img);
+
+                    // Create a div for displaying the file name
+                    var fileNameDiv = document.createElement('div');
+                    fileNameDiv.className = 'fileNameDiv';
+                    fileNameDiv.textContent = path.split('/').pop(); // Extract file name from path
+                    cell.appendChild(fileNameDiv);
+
+                    row.appendChild(cell);
                 });
-            });
-    }
 
-    fetchImages('FND', 'fndContainer');
-    fetchImages('BPC-FND', 'bpcFndContainer');
-</script>
+                tbody.appendChild(row);
+            }
+        });
+    </script>
 </body>
 </html>
-
